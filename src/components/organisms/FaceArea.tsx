@@ -4,12 +4,12 @@ import { ChatContext } from '../../context/contexts';
 
 function FaceArea() {
     const videoRef = useRef<HTMLVideoElement>(null);
-    const { receiving } = useContext(ChatContext);
+    const { talking } = useContext(ChatContext);
 
     useEffect(() => {
         if (!videoRef.current)
             return;
-        if (receiving) {
+        if (talking) {
             videoRef.current.play();
         }
         else {
@@ -20,7 +20,7 @@ function FaceArea() {
                 videoRef.current.currentTime = 0;
             }, 1000);
         }
-    }, [receiving]);
+    }, [talking]);
 
 
     return (

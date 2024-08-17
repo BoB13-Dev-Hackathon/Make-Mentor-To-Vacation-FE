@@ -17,6 +17,7 @@ const CountContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const [chats, setChats] = useState<Chat[]>([]);
     const [prompt, setPrompt] = useState('');
     const [receiveChat, setReceiveChat] = useState('');
+    const [talking, setTalking] = useState(false);
 
     let aborter = new AbortController();
     
@@ -85,12 +86,17 @@ const CountContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
                     response: string 
                 }
                 const res: resType = await response.json();
+                console.debug(res);
                 setReceiving(false);
                 const chat: Chat = {
                     sender: 'gilgil',
                     text: res.response
                 }
                 setChats(e => [...e, chat]);
+
+                // TODO : remove this
+                setTalking(true);
+                setTimeout(() => setTalking(false), 2000);
             } catch(e) {
                 console.error(e);
             }
@@ -112,6 +118,7 @@ const CountContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
     
     const state = {
         receiving,
+        talking,
         receiveChat,
         chats,
         prompt,

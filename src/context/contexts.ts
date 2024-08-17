@@ -3,6 +3,7 @@ import { Chat } from "./types";
 
 export const ChatContext = createContext({
     receiving: false,
+    talking: false,
     receiveChat: '',
     prompt: '',
     chats: [] as Chat[],

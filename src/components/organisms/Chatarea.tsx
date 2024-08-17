@@ -22,7 +22,8 @@ function ChatArea() {
     const { transcript, listening, toggleListening, resetTranscript } = useSpeechToText();
 
     const { 
-        receiving, 
+        receiving,
+        talking,
         receiveChat, 
         chats,
         prompt,
