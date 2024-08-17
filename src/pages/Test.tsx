@@ -1,12 +1,11 @@
 import React from 'react';
-import Chatarea from '../components/organisms/Chatarea';
-
 
 function Test() {
 
-    
     return (
-        <Chatarea />
+        <div className='flex'>
+            just test place
+        </div>
     )
 }
 
