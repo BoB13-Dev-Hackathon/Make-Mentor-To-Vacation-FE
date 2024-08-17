@@ -2,7 +2,6 @@ import React, {
     useContext,
     useEffect,
     useRef,
-    useState
 } from 'react';
 import { Button } from '@nextui-org/button';
 
@@ -14,11 +13,13 @@ import {
     ScrollShadow,
 } from '@nextui-org/react';
 import { ChatContext } from '../../context/contexts';
+import useSpeechToText from '../../hooks/useSpeechToText';
 
 
 function ChatArea() {
     const scrollRef = useRef<HTMLDivElement>(null);
-    const [recording, setRecording] = useState(false);
+    const { transcript, listening, toggleListening, resetTranscript } = useSpeechToText();
+
     const { 
         receiving, 
         receiveChat, 
@@ -35,11 +36,19 @@ function ChatArea() {
         }
     }, [receiveChat]);
 
+    useEffect(() => {
+        if (transcript != '')
+            setPrompt(transcript);
+    }, [transcript, setPrompt]);
+    useEffect(() => {
+        resetTranscript();
+    }, [listening])
+
     return (
         <div className='flex flex-col gap-4 h-screen p-3 rounded w-96'>
             <ScrollShadow hideScrollBar className='flex-1 flex-col justify-end w-full' ref={scrollRef}>
                 {chats.map(chat => (
-                    <div className='w-full bg-gray-50 rounded mt-2 br-2 p-2 flex-col'>
+                    <div className='w-full bg-gray-50 rounded mt-2 br-2 p-2 flex-col' key={chat.text}>
                         <div>
                             {chat.sender}
                         </div>
@@ -65,9 +74,9 @@ function ChatArea() {
                 <Button 
                     isIconOnly 
                     color='danger' 
-                    variant={ recording ? 'solid' : 'faded' }
+                    variant={ listening ? 'solid' : 'faded' }
                     aria-label='Send message'
-                    onClick={() => setRecording(e => !e)}
+                    onClick={() => toggleListening()}
                 >
                     <VoiceIcon style={{ width: '70%', height: '70%' }} />
                 </Button>
