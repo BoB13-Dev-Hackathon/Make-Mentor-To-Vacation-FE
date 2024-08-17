@@ -1,25 +1,27 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {
+  Route,
+  Routes,
+  useNavigate,
+} from "react-router-dom";
+
+import Main from "./pages/Main";
+import Test from './pages/Test';
+import { NextUIProvider } from '@nextui-org/react';
+
 
 function App() {
+  const navigate = useNavigate();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <NextUIProvider navigate={navigate}>
+      <Routes>
+        <Route path="/">
+          <Route index element={<Main />} />
+          <Route path="test" element={<Test />} />
+        </Route>
+      </Routes>
+    </NextUIProvider>
   );
 }
 
