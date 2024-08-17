@@ -39,9 +39,11 @@ function EffectArea() {
     }, [userMediaStream]);
 
     return (
-        <div className='flex flex-col w-20 h-full justify-stretch p-3 rounded'>
-            <div className='bg-gray-100 flex-auto' style={{height:`${100-volumn}%`}}/>
-            <div className='bg-warning-50 flex-auto' style={{height:`${volumn}%`}}/>
+        <div className='w-20 h-full p-3'>
+            <div className='flex flex-col w-full h-full justify-stretch rounded overflow-hidden'>
+                <div className='bg-gray-100 flex-auto' style={{height:`${100-volumn}%`}}/>
+                <div className='bg-gradient-to-t from-primary-300 to-indigo-400 flex-auto' style={{height:`${volumn}%`}}/>
+            </div>
         </div>
     )
 }
