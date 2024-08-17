@@ -35,7 +35,7 @@ function ChatArea() {
         if (scrollRef.current) {
             scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
         }
-    }, [receiveChat]);
+    }, [receiveChat, receiving]);
 
     useEffect(() => {
         if (transcript !== '')
@@ -48,10 +48,10 @@ function ChatArea() {
     return (
         <div className='flex flex-col gap-4 h-full p-3 rounded w-96'>
             <ScrollShadow hideScrollBar className='flex-1 flex-col justify-end w-full' ref={scrollRef}>
-                {chats.map(chat => (
+                {chats.map((chat, i) => (
                     <div 
                         className={`w-full bg-gray-50 rounded mt-2 br-2 p-2 flex flex-col ${chat.sender === 'menti' ? 'items-end' : ''}`} 
-                        key={chat.text}>
+                        key={i}>
                         <div className='text-sm font-serif font-bold'>
                             {chat.sender}
                         </div>
@@ -61,7 +61,7 @@ function ChatArea() {
                     </div>
                 ))}
                 {receiving
-                    ? <div className='w-full bg-gray-50 rounded mt-2 br-2 p-2 flex-col min-h-24'>
+                    ? <div className='w-full bg-gray-50 rounded mt-2 br-2 p-2 flex-col min-h-28'>
                         <div className='text-sm font-serif font-bold'>
                             gilgil
                         </div>

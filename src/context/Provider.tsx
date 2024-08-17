@@ -1,6 +1,7 @@
 import React, { useState, PropsWithChildren } from "react";
 import { ChatContext } from "./contexts";
 import { Chat } from "./types";
+import { SERVER_URL } from "./consts";
 // import { useRawState } from "../hooks/StickyState";
 
 export const Provider: React.FC<PropsWithChildren> = ({ children }) => {
@@ -29,13 +30,13 @@ const CountContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
         }
         setChats(e => [...e, myChat]);
 
-        async function run() {
+        async function stream_run() {
             aborter.abort();  // cancel previous request
             aborter = new AbortController();
             setReceiveChat('');
             try {
                 const response = await fetch(
-                    'http://127.0.0.1:5000/ask', {
+                    SERVER_URL+'/ask', {
                         signal: aborter.signal,
                         method: 'POST',
                         headers: {'Content-Type': 'application/json'},
@@ -67,7 +68,36 @@ const CountContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
             }
         }
 
-        run();
+        async function json_run() {
+            setReceiveChat('');
+            try {
+                const response = await fetch(
+                    SERVER_URL+'/ask', {
+                        signal: aborter.signal,
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({
+                            prompt: tempPrompt
+                        }),
+                    }
+                );
+                interface resType {
+                    response: string 
+                }
+                const res: resType = await response.json();
+                setReceiving(false);
+                const chat: Chat = {
+                    sender: 'gilgil',
+                    text: res.response
+                }
+                setChats(e => [...e, chat]);
+            } catch(e) {
+                console.error(e);
+            }
+        }
+
+        // stream_run();
+        json_run();
     }
 
     const stopChat = () => {
