@@ -13,7 +13,7 @@ function NavBar() {
             <Link to="/">
                 <NavbarBrand>
                     <VacationLogo className='size-12'/>
-                    <p className='font-serif text-inherit'> Make Mentor To Vacation</p>
+                    <p className='font-serif text-inherit font-bold'> Make Mentor To Vacation</p>
                 </NavbarBrand>
             </Link>
         </Navbar>

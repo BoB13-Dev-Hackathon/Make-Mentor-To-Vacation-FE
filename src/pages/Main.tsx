@@ -10,7 +10,8 @@ function Main() {
     return (
         <div className='flex flex-col bg-gray-700 items-center h-screen'>
             <div className='flex flex-col max-w-7xl bg-white h-full'>
-                <div className='flex h-screen shadow-xl'>
+                <NavBar />
+                <div className='flex shadow-xl' style={{height:'calc(100% - 65px)'}}>
                     <EffectArea />
                     <FaceArea />
                     <ChatArea />
