@@ -13,21 +13,27 @@ function FaceArea() {
             videoRef.current.play();
         }
         else {
-            videoRef.current.pause();
-            videoRef.current.currentTime = 0;
+            setTimeout(() => {
+                if (!videoRef.current)
+                    return;
+                videoRef.current.pause();
+                videoRef.current.currentTime = 0;
+            }, 1000);
         }
     }, [receiving]);
 
 
     return (
-        <div className='flex flex-1 p-3 h-screen justify-center'>
-            <video 
-                src='/gilgil.mp4' 
-                ref={videoRef} 
-                className='rounded h-full'
-                loop
-                muted
-                />
+        <div className='flex flex-1 h-full justify-center p-3'>
+            <div className='h-full w-full rounded bg-black shadow-md'>
+                <video 
+                    src='/gilgil.mp4' 
+                    ref={videoRef} 
+                    className='rounded h-full'
+                    loop
+                    muted
+                    />
+            </div>
         </div>
     )
 }

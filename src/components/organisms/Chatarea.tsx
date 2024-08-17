@@ -37,32 +37,34 @@ function ChatArea() {
     }, [receiveChat]);
 
     useEffect(() => {
-        if (transcript != '')
+        if (transcript !== '')
             setPrompt(transcript);
     }, [transcript, setPrompt]);
     useEffect(() => {
         resetTranscript();
-    }, [listening])
+    }, [listening, resetTranscript]);
 
     return (
-        <div className='flex flex-col gap-4 h-screen p-3 rounded w-96'>
+        <div className='flex flex-col gap-4 h-full p-3 rounded w-96'>
             <ScrollShadow hideScrollBar className='flex-1 flex-col justify-end w-full' ref={scrollRef}>
                 {chats.map(chat => (
-                    <div className='w-full bg-gray-50 rounded mt-2 br-2 p-2 flex-col' key={chat.text}>
-                        <div>
+                    <div 
+                        className={`w-full bg-gray-50 rounded mt-2 br-2 p-2 flex flex-col ${chat.sender === 'menti' ? 'items-end' : ''}`} 
+                        key={chat.text}>
+                        <div className='text-sm font-serif font-bold'>
                             {chat.sender}
                         </div>
-                        <div>
+                        <div className='text-sm'>
                             {chat.text}
                         </div>
                     </div>
                 ))}
                 {receiving
                     ? <div className='w-full bg-gray-50 rounded mt-2 br-2 p-2 flex-col'>
-                        <div>
+                        <div className='text-sm font-serif font-bold'>
                             gilgil
                         </div>
-                        <div>
+                        <div className='text-sm'>
                             {receiveChat}
                         </div>
                     </div>
@@ -70,11 +72,19 @@ function ChatArea() {
                 }
             </ScrollShadow>
             <div className='flex w-full gap-1 items-stretch'>
-                <Input className='flex-1' value={prompt} onChange={e => setPrompt(e.target.value)} />
+                <Input 
+                    className='flex-1' 
+                    value={prompt} 
+                    onChange={e => setPrompt(e.target.value)} 
+                    onKeyUp={e => {
+                        if(e.key === "Enter" && !receiving) {
+                            sendChat();
+                        }
+                    }} />
                 <Button 
                     isIconOnly 
                     color='danger' 
-                    variant={ listening ? 'solid' : 'faded' }
+                    variant={ listening ? 'shadow' : 'faded' }
                     aria-label='Send message'
                     onClick={() => toggleListening()}
                 >

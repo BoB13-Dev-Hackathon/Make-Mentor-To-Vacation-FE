@@ -1,11 +1,47 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+
+
+const audioContext = (stream: MediaStream) => {
+    const audioContext = new AudioContext();
+    const analyser = audioContext.createAnalyser();
+    const microphone = audioContext.createMediaStreamSource(stream);
+    microphone.connect(analyser);
+    analyser.fftSize = 256; // 256 ~ 2048
+    const bufferLength = analyser.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
+    return { analyser, bufferLength, dataArray };
+};
+
+const audioFrequency = (dataArray: Uint8Array, bufferLength: number) => {
+    let total = 0;
+    for (let i = 0; i < bufferLength; i += 1) {
+      total += dataArray[i];
+    }
+    return total / bufferLength;
+};
+  
 
 
 function EffectArea() {
+    const [volumn, setVolumn] = useState(0);
+    const [userMediaStream, setUserMediaStream] = useState<MediaStream | null>(null);
+
+    useEffect(() => {
+        if(!userMediaStream)
+            return;
+        const { analyser, bufferLength, dataArray } = audioContext(userMediaStream);
+        const volumnInterval = setInterval(() => {
+            analyser.getByteFrequencyData(dataArray);
+            const vol = audioFrequency(dataArray, bufferLength);
+            setVolumn(Math.floor((vol / 256) * 100));
+        }, 30);
+        return () => clearInterval(volumnInterval);
+    }, [userMediaStream]);
+
     return (
-        <div className='flex flex-col w-32 h-screen justify-stretch p-3'>
-            <div className='bg-gray-100 h-32 flex-auto' />
-            <div className='bg-primary-300 h-52 flex-auto' />
+        <div className='flex flex-col w-20 h-full justify-stretch p-3 rounded'>
+            <div className='bg-gray-100 flex-auto' style={{height:`${100-volumn}%`}}/>
+            <div className='bg-warning-50 flex-auto' style={{height:`${volumn}%`}}/>
         </div>
     )
 }
