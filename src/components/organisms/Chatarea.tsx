@@ -11,6 +11,7 @@ import { ReactComponent as StopIcon } from '../atoms/material-symbols--stop.svg'
 import {
     Input,
     ScrollShadow,
+    Spinner,
 } from '@nextui-org/react';
 import { ChatContext } from '../../context/contexts';
 import useSpeechToText from '../../hooks/useSpeechToText';
@@ -60,12 +61,18 @@ function ChatArea() {
                     </div>
                 ))}
                 {receiving
-                    ? <div className='w-full bg-gray-50 rounded mt-2 br-2 p-2 flex-col'>
+                    ? <div className='w-full bg-gray-50 rounded mt-2 br-2 p-2 flex-col min-h-24'>
                         <div className='text-sm font-serif font-bold'>
                             gilgil
                         </div>
-                        <div className='text-sm'>
-                            {receiveChat}
+                        <div className='relative'>
+                            <Spinner 
+                                label='멘토님이 생각하시는중...' 
+                                color='primary' 
+                                className='absolute left-0 top-0 w-full h-full min-h-20' />
+                            <div className='text-sm opacity-30'>
+                                {receiveChat}
+                            </div>
                         </div>
                     </div>
                     : <></>
@@ -77,7 +84,7 @@ function ChatArea() {
                     value={prompt} 
                     onChange={e => setPrompt(e.target.value)} 
                     onKeyUp={e => {
-                        if(e.key === "Enter" && !receiving) {
+                        if(e.key === 'Enter' && !receiving) {
                             sendChat();
                         }
                     }} />
@@ -92,7 +99,7 @@ function ChatArea() {
                 </Button>
                 <Button
                     isIconOnly
-                    color='warning'
+                    color='primary'
                     variant='faded'
                     aria-label='Send message'
                     onClick={() => {

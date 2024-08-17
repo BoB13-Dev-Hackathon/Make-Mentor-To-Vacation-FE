@@ -10,8 +10,7 @@ function Main() {
     return (
         <div className='flex flex-col bg-gray-700 items-center h-screen'>
             <div className='flex flex-col max-w-7xl bg-white h-full'>
-                <NavBar />
-                <div className='flex shadow-xl h-full'>
+                <div className='flex h-screen shadow-xl'>
                     <EffectArea />
                     <FaceArea />
                     <ChatArea />
