@@ -6,6 +6,7 @@ export const ChatContext = createContext({
     talking: false,
     receiveChat: '',
     prompt: '',
+    userMediaStream: null as MediaStream | null,
     chats: [] as Chat[],
     sendChat: () => {},
     stopChat: () => {},

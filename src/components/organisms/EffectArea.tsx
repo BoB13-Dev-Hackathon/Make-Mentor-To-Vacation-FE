@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { ChatContext } from '../../context/contexts';
 
 
 const audioContext = (stream: MediaStream) => {
@@ -24,7 +25,7 @@ const audioFrequency = (dataArray: Uint8Array, bufferLength: number) => {
 
 function EffectArea() {
     const [volumn, setVolumn] = useState(0);
-    const [userMediaStream, setUserMediaStream] = useState<MediaStream | null>(null);
+    const { userMediaStream } = useContext(ChatContext);
 
     useEffect(() => {
         if(!userMediaStream)
